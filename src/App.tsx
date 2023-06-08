@@ -3,6 +3,7 @@ import React from 'react'
 import { ThemeProvider } from '@mui/material/styles'
 import { Container, Grid } from '@mui/material'
 import axios from 'axios'
+import InfiniteScroll from 'react-infinite-scroll-component'
 
 import Navbar from './components/Navbar'
 import theme from './theme'
@@ -32,6 +33,7 @@ function App() {
   ) => {
     const newValue = event.target.value as SortParameterType
 
+    setAnimationList([])
     setSortParameter(newValue)
     fetchAnimationLists(newValue)
   }
@@ -41,9 +43,9 @@ function App() {
       sortbyParam: SortParameterType = sortParameter,
       pageParam: number = page
     ) => {
-      try {
-        setLoading(true)
+      setLoading(true)
 
+      try {
         controller.abort()
         const newController = new AbortController()
 
@@ -61,13 +63,11 @@ function App() {
             }
           )
           .then(({ data }) => {
-            setAnimationList(data.data)
+            setAnimationList((prev) => [...prev, ...data.data])
+            setLoading(false)
           })
           .catch(() => {
             console.log('Request Failed')
-          })
-          .finally(() => {
-            setLoading(false)
           })
       } catch {
         console.log('Request Cancelled')
@@ -82,6 +82,25 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const handleScroll = React.useCallback(() => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop + 1 <
+        document.documentElement.offsetHeight ||
+      loading
+    ) {
+      return
+    }
+
+    const newPage = page + 1
+    setPage(newPage)
+    fetchAnimationLists(undefined, newPage)
+  }, [loading])
+
+  React.useEffect(() => {
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [handleScroll])
+
   return (
     <ThemeProvider theme={theme}>
       <Navbar />
@@ -93,7 +112,8 @@ function App() {
         />
 
         <Grid container spacing={1.5} marginTop={2} marginBottom={1}>
-          {loading ? <Loading /> : <Animations list={animationList} />}
+          <Animations list={animationList} />
+          {loading && <Loading />}
         </Grid>
       </Container>
     </ThemeProvider>
