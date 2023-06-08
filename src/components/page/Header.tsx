@@ -47,6 +47,9 @@ function Header({ sortParameter, onSortParameterChange }: HeaderProps) {
       <ActionSheet
         ref={sortActionSheet}
         zIndex={1200}
+        sheetStyle={{
+          bottom: -1,
+        }}
         bgStyle={{ backgroundColor: '#00000039' }}
         bgTransition='opacity 0.3s ease-in-out, z-index 0.3s ease-in-out'
         sheetTransition='transform 0.3s ease-in-out'

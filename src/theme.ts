@@ -46,7 +46,6 @@ const theme = createTheme({
         size: 'large',
         sx: {
           fontSize: 15,
-          paddingX: '0px',
         },
       },
     },
@@ -58,6 +57,15 @@ const theme = createTheme({
     MuiFormControlLabel: {
       defaultProps: {
         dir: 'rtl',
+      },
+    },
+    MuiCardContent: {
+      styleOverrides: {
+        root: {
+          ':last-child': {
+            paddingBottom: 0.6,
+          },
+        },
       },
     },
   },

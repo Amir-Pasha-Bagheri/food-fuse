@@ -37,7 +37,11 @@ function Sort({ sortParameter, onSortParameterChange }: SortProps) {
       <Typography paddingY={1} paddingX={2.5} marginBottom='16px' variant='h6'>
         مرتب سازی بر اساس
       </Typography>
-      <RadioGroup value={sortParameter} onChange={onSortParameterChange}>
+      <RadioGroup
+        value={sortParameter}
+        onChange={onSortParameterChange}
+        sx={{ paddingBottom: 3 }}
+      >
         {sortableItems.map((item) => (
           <FormControlLabel
             key={item.value}

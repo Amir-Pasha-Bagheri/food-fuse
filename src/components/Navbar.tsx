@@ -5,13 +5,12 @@ function Navbar() {
   return (
     <AppBar
       position='sticky'
-      color='transparent'
+      color='inherit'
       sx={{
         boxShadow: 'none',
       }}
     >
       <Toolbar
-        disableGutters
         sx={{
           justifyContent: 'end',
         }}

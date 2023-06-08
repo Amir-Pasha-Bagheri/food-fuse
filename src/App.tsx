@@ -84,15 +84,15 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container maxWidth='sm'>
-        <Navbar />
+      <Navbar />
 
+      <Container maxWidth='sm'>
         <Header
           sortParameter={sortParameter}
           onSortParameterChange={onSortParameterChange}
         />
 
-        <Grid container spacing={1.5} marginTop={2}>
+        <Grid container spacing={1.5} marginTop={2} marginBottom={1}>
           {loading ? <Loading /> : <Animations list={animationList} />}
         </Grid>
       </Container>
