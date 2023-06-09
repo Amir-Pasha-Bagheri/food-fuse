@@ -1,9 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react'
 
 import { ThemeProvider } from '@mui/material/styles'
 import { Container, Grid } from '@mui/material'
 import axios from 'axios'
-import InfiniteScroll from 'react-infinite-scroll-component'
 
 import Navbar from './components/Navbar'
 import theme from './theme'
@@ -19,6 +19,7 @@ function App() {
 
   const [sortParameter, setSortParameter] =
     React.useState<SortParameterType>(null)
+
   const [page, setPage] = React.useState<number>(1)
 
   const [controller, setController] = React.useState<ControllerType>({
@@ -34,8 +35,9 @@ function App() {
     const newValue = event.target.value as SortParameterType
 
     setAnimationList([])
+    setPage(1)
     setSortParameter(newValue)
-    fetchAnimationLists(newValue)
+    fetchAnimationLists(newValue, 1)
   }
 
   const fetchAnimationLists = React.useCallback(
@@ -43,9 +45,9 @@ function App() {
       sortbyParam: SortParameterType = sortParameter,
       pageParam: number = page
     ) => {
-      setLoading(true)
-
       try {
+        setLoading(true)
+
         controller.abort()
         const newController = new AbortController()
 
@@ -78,14 +80,12 @@ function App() {
 
   React.useEffect(() => {
     fetchAnimationLists()
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleScroll = React.useCallback(() => {
     if (
-      window.innerHeight + document.documentElement.scrollTop + 1 <
-        document.documentElement.offsetHeight ||
+      window.innerHeight + document.documentElement.scrollTop <
+        document.documentElement.offsetHeight - 1 ||
       loading
     ) {
       return
