@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDrag } from 'react-dnd'
-import { BoxType, FacilitiesType } from 'src/types/RoomFacilities.type'
+import { BoxType } from 'src/types/Area.type'
 
 const style: React.CSSProperties = {
   border: '1px dashed gray',
@@ -12,27 +12,20 @@ const style: React.CSSProperties = {
   float: 'left',
 }
 
-type DraggableItemProps = {
+type DraggableRoleProps = {
   children: string
-  setFacilities: React.Dispatch<React.SetStateAction<FacilitiesType[]>>
+  id: string
+  drop: (id: string) => void
 }
 
-const DraggableItem = function Box({
-  children,
-  setFacilities,
-}: DraggableItemProps) {
+const DraggableRole = function Box({ children, id, drop }: DraggableRoleProps) {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: BoxType.BOX,
-    end: () => {
-      setFacilities((prev) => [
-        ...prev,
-        {
-          top: 0,
-          left: 0,
-          title: `${children} Here`,
-          id: children || '',
-        },
-      ])
+    end: (item, monitor) => {
+      const dropResult = monitor.getDropResult()
+      if (dropResult) {
+        drop(id)
+      }
     },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
@@ -48,4 +41,4 @@ const DraggableItem = function Box({
   )
 }
 
-export default React.memo(DraggableItem)
+export default React.memo(DraggableRole)

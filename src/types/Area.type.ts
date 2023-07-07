@@ -2,7 +2,7 @@ export const BoxType = {
   BOX: 'box',
 }
 
-export type FacilitiesType = {
+export type AreaRoleType = {
   top: number
   left: number
   title: string

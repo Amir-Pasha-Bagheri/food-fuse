@@ -4,13 +4,13 @@ import theme from '../assets/theme'
 import Suspensor from './suspensor'
 import DefaultLoader from './loaders/DefaultLoader'
 
-const RoomFacilities = React.lazy(() => import('./roomFacilities'))
+const Area = React.lazy(() => import('./Area'))
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <Suspensor fallback={<DefaultLoader />}>
-        <RoomFacilities />
+        <Area />
       </Suspensor>
     </ThemeProvider>
   )

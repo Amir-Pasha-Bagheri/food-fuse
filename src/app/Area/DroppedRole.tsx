@@ -1,9 +1,9 @@
-import type { CSSProperties, ReactNode } from 'react'
+import React from 'react'
 import { useDrag } from 'react-dnd'
 
-import { BoxType } from 'src/types/RoomFacilities.type'
+import { BoxType } from 'src/types/Area.type'
 
-const style: CSSProperties = {
+const style: React.CSSProperties = {
   position: 'absolute',
   border: '1px dashed gray',
   backgroundColor: 'white',
@@ -16,15 +16,17 @@ interface BoxProps {
   left: number
   top: number
   hideSourceOnDrag?: boolean
-  children?: ReactNode
+  children?: React.ReactNode
+  pick: (id: string) => void
 }
 
-export default function Box({
+function DroppedRole({
   id,
   left,
   top,
   hideSourceOnDrag,
   children,
+  pick,
 }: BoxProps) {
   const [{ isDragging }, drag] = useDrag(
     () => ({
@@ -37,6 +39,10 @@ export default function Box({
     [id, left, top]
   )
 
+  const onRemoveRole = () => {
+    pick(id)
+  }
+
   if (isDragging && hideSourceOnDrag) {
     return <div ref={drag} />
   }
@@ -48,6 +54,10 @@ export default function Box({
       data-testid='box'
     >
       {children}
+
+      <button onClick={onRemoveRole}>remove</button>
     </div>
   )
 }
+
+export default React.memo(DroppedRole)
